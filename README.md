@@ -8,3 +8,15 @@ Projeto criado para o desafio técnico da TechnoTech Sistemas, para a vaga de es
 
 Para instalar localmente, use [...].
 
+## Variáveis de Ambiente
+
+...
+
+## Configuração do Docker
+
+...
+
+## Configuração Local
+
+...
+
