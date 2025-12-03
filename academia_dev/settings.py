@@ -35,13 +35,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'escola.apps.EscolaConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'escola.apps.EscolaConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

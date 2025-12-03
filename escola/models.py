@@ -1,6 +1,18 @@
 from django.db import models
 
 
+# Consider the possibility of moving these variables to a separate file
+STATUS_CURSO = [
+    ("ativo", "Ativo"),
+    ("inativo", "Inativo"),
+]
+
+STATUS_MATRICULA = [
+    ("pago", "Pago"),
+    ("pendente", "Pendente"),
+]
+
+
 class Aluno(models.Model):
     nome = models.CharField(max_length=40, null=False)
     email = models.CharField(max_length=40, unique=True, null=False)
@@ -11,11 +23,6 @@ class Aluno(models.Model):
         return self.nome
 
 
-STATUS_CURSO = [
-    ("ativo", "Ativo"),
-    ("inativo", "Inativo"),
-]
-
 class Curso(models.Model):
     nome = models.CharField(max_length=30, null=False)
     carga_horaria = models.IntegerField(default=0, null=False)
@@ -25,11 +32,6 @@ class Curso(models.Model):
     def __str__(self):
         return self.nome
 
-
-STATUS_MATRICULA = [
-    ("pago", "Pago"),
-    ("pendente", "Pendente"),
-]
 
 class Matricula(models.Model):
     data = models.DateField(null=False)
