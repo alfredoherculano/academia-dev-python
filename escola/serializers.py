@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 from .models import Aluno, Curso, Matricula
 
 
@@ -34,3 +35,10 @@ class MatriculaSerializer(serializers.ModelSerializer):
             "aluno",
             "curso",
         )
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Matricula.objects.all(),
+                fields=["aluno", "curso"],
+                message="Este aluno já está matriculado neste curso."
+            )
+        ]
