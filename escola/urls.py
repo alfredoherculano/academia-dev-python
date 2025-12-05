@@ -15,6 +15,7 @@ urlpatterns = [
     # Endpoints Matrículas
     path("matriculas/", views.MatriculaList.as_view(), name="matriculas-lista"),
     path("matriculas/<int:pk>/", views.MatriculaDetail.as_view(), name="matriculas-detalhes"),
+    path("matriculas/totais/", views.TotaisPorAluno.as_view(), name="matriculas-totais"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
