@@ -1,0 +1,20 @@
+<h1>Histórico do Aluno {{ aluno_id }}</h1>
+
+<h2>Cursos</h2>
+<ul>
+{% for c in cursos %}
+    <li>
+        {{ c.curso_nome }} - {{ c.status }}
+    </li>
+{% endfor%}
+</ul>
+
+<h2>Financeiro</h2>
+<p>Total pago: R${{ totais.total_pago }}</p>
+<p>Total devido: R${{ totais.total_devido }}</p>
+
+{% if inadimplente %}
+<p style="color:red;">Aluno inadimplente</p>
+{% else %}
+<p style="color:green;">Aluno regular</p>
+{% endif %}

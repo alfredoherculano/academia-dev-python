@@ -2,10 +2,11 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Aluno, Curso, Matricula
+from .helper_functions import totais_por_aluno, gerar_historico
 from .serializers import AlunoSerializer, CursoSerializer, MatriculaSerializer
 
 from django.http import HttpResponse
-from django.db import connection
+from django.shortcuts import render
 
 
 # Root
@@ -14,11 +15,11 @@ def welcome(request):
 
 
 # Alunos
-class AlunoList(generics.ListCreateAPIView): # ListCreateAPIView is for a collection of model instances
+class AlunoList(generics.ListCreateAPIView):
     queryset = Aluno.objects.all()
     serializer_class = AlunoSerializer
 
-class AlunoDetail(generics.RetrieveUpdateDestroyAPIView): # RetriveUpdateDestroy is for a single model instance
+class AlunoDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Aluno.objects.all()
     serializer_class = AlunoSerializer
 
@@ -50,6 +51,18 @@ class MatriculaList(generics.ListCreateAPIView):
             qs = qs.filter(status=status)
 
         return qs
+    
+class MatriculasPorStatus(generics.ListAPIView):
+    serializer_class = MatriculaSerializer
+
+    def get_queryset(self):
+        qs = Matricula.objects.all()
+
+        status = self.request.query_params.get("status")
+
+        qs = qs.filter(status=status)
+
+        return qs
 
 class MatriculaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Matricula.objects.all()
@@ -57,33 +70,32 @@ class MatriculaDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 # Totais
-
 class TotaisPorAluno(APIView):
     def get(self, request):
         aluno_id = request.query_params.get("aluno")
         if not aluno_id:
-            return Response({"erro":"parametro aluno requerido"}, status=400)
-        
-        sql = """
-            SELECT
-                aluno_id,
-                SUM(CASE WHEN m.status = 'pago' THEN c.valor_inscricao ELSE 0 END) AS total_pago,
-                SUM(CASE WHEN m.status = 'pendente' THEN c.valor_inscricao ELSE 0 END) AS total_devido
-            FROM matricula m
-            JOIN curso c ON m.curso_id = c.id
-            WHERE aluno_id = %s
-            GROUP BY aluno_id;
-        """
+            return Response({"erro": "parametro aluno requerido"}, status=400)
 
-        with connection.cursor() as cursor:
-            cursor.execute(sql, [aluno_id])
-            row = cursor.fetchone()
+        data = totais_por_aluno(aluno_id)
+        return Response(data)
+    
 
-        if row is None:
-            return Response({"aluno_id": aluno_id, "total_pago": 0, "total_devido": 0})
+# Relatórios
+# Histórico JSON
+class HistoricoAluno(APIView):
+    def get(self, request):
+        aluno_id = request.query_params.get("aluno")
+        if not aluno_id:
+            return Response({"erro":"parametro aluno requerido"})
         
-        return Response({
-            "aluno_id": row[0],
-            "total_pago": row[1],
-            "total_devido": row[2]
-        })
+        data = gerar_historico(aluno_id)
+        return Response(data)
+    
+# Histórico HTML
+def historico_aluno(request):
+    aluno_id = request.GET.get("aluno")
+    if not aluno_id:
+        return render(request, "erro.html", {"mensagem": "parametro aluno requerido"})
+    
+    data = gerar_historico(aluno_id)
+    return render(request, "escola/historico.html", data)
