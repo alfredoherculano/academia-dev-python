@@ -56,11 +56,9 @@ class MatriculasPorStatus(generics.ListAPIView):
     serializer_class = MatriculaSerializer
 
     def get_queryset(self):
-        qs = Matricula.objects.all()
-
         status = self.request.query_params.get("status")
 
-        qs = qs.filter(status=status)
+        qs = Matricula.objects.filter(status=status)
 
         return qs
 
