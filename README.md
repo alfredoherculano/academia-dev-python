@@ -18,17 +18,19 @@ Projeto criado para o desafio técnico da TechnoTech Sistemas, para a vaga de es
 
 1. Clone o repositório:
 
-```git clone https://github.com/alfredoherculano/academia-dev-python```
-```cd academia-dev-python```
+    ```
+    git clone https://github.com/alfredoherculano/academia-dev-python
+    cd academia-dev-python
+    ```
 
 2. Inicie os serviços:
 
-```docker compose up --build```
+    ```docker compose up --build```
 
 3. Rode as migrações (somente na primeira execução):
 
-```docker compose run django-web python manage.py migrate```
+    ```docker compose run django-web python manage.py migrate```
 
 4. Acesse a aplicação:
 
-(http://127.0.0.1:8000)
+    ```http://127.0.0.1:8000```
