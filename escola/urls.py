@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from escola.views import historico_aluno, MatriculaList
+from escola.views import historico_aluno
 from . import views
 
 urlpatterns = [
