@@ -22,7 +22,7 @@ urlpatterns = [
     path("financeiro/status/", views.MatriculasPorStatus.as_view(), name="matriculas-status"),
 
     # Endpoints relatórios
-    path("api/historico/", views.HistoricoAluno.as_view(), name="historico-json"),
+    path("historico/", views.HistoricoAluno.as_view(), name="historico-json"),
     path("relatorios/historico/", historico_aluno, name="historico-html"),
 ]
 

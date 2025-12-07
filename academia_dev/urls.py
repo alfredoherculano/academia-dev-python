@@ -21,5 +21,5 @@ from escola.views import welcome
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", welcome, name="boas-vindas"),
-    path("escola/", include("escola.urls")),
+    path("api/", include("escola.urls")),
 ]
